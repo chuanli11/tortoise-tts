@@ -312,16 +312,19 @@ class TextToSpeech:
             'standard': Very good quality. This is generally about as good as you are going to get.
             'high_quality': Use if you want the absolute best. This is not really worth the compute, though.
         """
+        # repetition_penalty is important, setting it to less than 1 will generate empty signal. 1.0 will introduce unecessary long pause between words.
+        # setting it to a large value will make the speech more coherent but also introduce distortion
         # Use generally found best tuning knobs for generation.
         settings = {'temperature': .8, 'length_penalty': 1.0, 'repetition_penalty': 2.0,
                     'top_p': .8,
                     'cond_free_k': 2.0, 'diffusion_temperature': 1.0}
+
         # Presets are defined here.
         presets = {
             'ultra_fast': {'num_autoregressive_samples': 16, 'diffusion_iterations': 30, 'cond_free': False},
             'fast': {'num_autoregressive_samples': 96, 'diffusion_iterations': 80},
             'standard': {'num_autoregressive_samples': 256, 'diffusion_iterations': 200},
-            'high_quality': {'num_autoregressive_samples': 256, 'diffusion_iterations': 400},
+            'high_quality': {'num_autoregressive_samples': 512, 'diffusion_iterations': 400},
         }
         settings.update(presets[preset])
         settings.update(kwargs) # allow overriding of preset settings with kwargs

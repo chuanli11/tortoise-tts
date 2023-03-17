@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
     seed = int(time()) if args.seed is None else args.seed
     for selected_voice in selected_voices:
-        voice_outpath = os.path.join(outpath, selected_voice)
+        voice_outpath = os.path.join(outpath, args.textfile + '-' + args.voice)
         os.makedirs(voice_outpath, exist_ok=True)
 
         if '&' in selected_voice:
@@ -54,6 +54,7 @@ if __name__ == '__main__':
             voice_sel = [selected_voice]
 
         voice_samples, conditioning_latents = load_voices(voice_sel)
+
         all_parts = []
         for j, text in enumerate(texts):
             if regenerate is not None and j not in regenerate:
