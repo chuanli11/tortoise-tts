@@ -23,9 +23,14 @@ if __name__ == '__main__':
                                                       'should only be specified if you have custom checkpoints.', default=MODELS_DIR)
     parser.add_argument('--seed', type=int, help='Random seed which can be used to reproduce results.', default=None)
     parser.add_argument('--produce_debug_state', type=bool, help='Whether or not to produce debug_state.pth, which can aid in reproducing problems. Defaults to true.', default=True)
+    parser.add_argument(
+        '--disable-redaction', default=False, action='store_true',
+        help='Normally text enclosed in brackets are automatically redacted from the spoken output '
+            '(but are still rendered by the model), this can be used for prompt engineering. '
+            'Set this to disable this behavior.')
 
     args = parser.parse_args()
-    tts = TextToSpeech(models_dir=args.model_dir)
+    tts = TextToSpeech(models_dir=args.model_dir, enable_redaction=not args.disable_redaction)
 
     outpath = args.output_path
     selected_voices = args.voice.split(',')
